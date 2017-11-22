@@ -2,8 +2,10 @@ package Display;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,7 +26,7 @@ public class ChatFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	static ChatFrame frame;
-	
+
 	private JPanel contentPane;
 	private User connectedUser;
 
@@ -38,18 +40,18 @@ public class ChatFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					frame = new ChatFrame(null);
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	// public static void main(String[] args) {
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// try {
+	// frame = new ChatFrame(null);
+	// frame.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// });
+	// }
 
 	/**
 	 * Create the frame.
@@ -58,7 +60,10 @@ public class ChatFrame extends JFrame {
 		this.connectedUser = user;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setBounds(100, 100, 650, 650);
+		int w = 650;
+		int h = 650;
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setBounds(screenSize.width / 2 - (w / 2), screenSize.height / 2 - (h / 2), w, h);
 		contentPane = new JPanel();
 		contentPane.setBackground(screenBackground);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -124,7 +129,7 @@ public class ChatFrame extends JFrame {
 
 	}
 
-	public void disconnect(){
+	public void disconnect() {
 		Run.chat.dispose();
 		Run.login = new LoginFrame();
 		Run.login.setVisible(true);
