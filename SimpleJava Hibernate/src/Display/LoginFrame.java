@@ -37,18 +37,18 @@ public class LoginFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new LoginFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					frame = new LoginFrame();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -95,7 +95,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				Point currCoords = e.getLocationOnScreen();
-				frame.setLocation(currCoords.x - compCoords.x, currCoords.y - compCoords.y);
+				Run.login.setLocation(currCoords.x - compCoords.x, currCoords.y - compCoords.y);
 			}
 
 			@Override
@@ -107,9 +107,9 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void openChat(User user, int port){
-		frame.dispose();
-		ChatFrame chat = new ChatFrame(user);
-		chat.setVisible(true);
+		Run.login.dispose();
+		Run.chat = new ChatFrame(user);
+		Run.chat.setVisible(true);
 	}
 
 }

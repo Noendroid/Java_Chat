@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,10 +23,11 @@ public class ChatFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	static ChatFrame frame;
+	
 	private JPanel contentPane;
-	
 	private User connectedUser;
-	
+
 	private Color screenBackground = LoginFrame.screenBackground;
 	private Color labelForground = LoginFrame.labelForground;
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
@@ -35,18 +38,18 @@ public class ChatFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChatFrame frame = new ChatFrame(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					frame = new ChatFrame(null);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -75,7 +78,7 @@ public class ChatFrame extends JFrame {
 		dialogArea.setText("sample text");
 		dialogArea.setBounds(10, 54, 614, 482);
 		panel.add(dialogArea);
-		
+
 		JTextArea newMessegeArea = new JTextArea();
 		newMessegeArea.setBackground(chatBackground);
 		newMessegeArea.setForeground(chatForground);
@@ -96,20 +99,34 @@ public class ChatFrame extends JFrame {
 		firstLastNameLabel.setForeground(labelForground);
 		firstLastNameLabel.setBounds(10, 29, 321, 14);
 		panel.add(firstLastNameLabel);
-		
+
 		JButton sendButton = new JButton("send");
 		sendButton.setBackground(buttonsBackground);
 		sendButton.setForeground(labelForground);
 		sendButton.setBounds(558, 547, 66, 52);
 		sendButton.setBorder(null);
 		panel.add(sendButton);
-		
+
 		JButton disconnectButton = new JButton("Disconnect");
 		disconnectButton.setBackground(disconnectColor);
 		disconnectButton.setForeground(chatForground);
 		disconnectButton.setBorder(null);
 		disconnectButton.setBounds(541, 11, 83, 32);
+		disconnectButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				disconnect();
+			}
+		});
 		panel.add(disconnectButton);
-	
+
+	}
+
+	public void disconnect(){
+		Run.chat.dispose();
+		Run.login = new LoginFrame();
+		Run.login.setVisible(true);
 	}
 }
