@@ -33,6 +33,7 @@ public class LoginFrame extends JFrame {
 	public static Color chatBackground = new Color(38, 50, 56);
 	public static Color chatForground = new Color(236, 239, 241);
 	public static Color exitColor = new Color(173, 20, 87);
+	public static Color alertColor = new Color(255, 235, 59);
 
 	/**
 	 * Launch the application.
