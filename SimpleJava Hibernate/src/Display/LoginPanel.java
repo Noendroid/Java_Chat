@@ -23,7 +23,7 @@ public class LoginPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	static Point compCoords;
 	private JTextField userNameField;
 
@@ -35,8 +35,7 @@ public class LoginPanel extends JPanel {
 	private Color labelForground = LoginFrame.labelForground;
 	private Color fieldForground = LoginFrame.fieldForground;
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
-	private Color alertColor = LoginFrame.alertColor;
-
+	
 	private JPasswordField passwordField;
 
 	/**
@@ -131,25 +130,25 @@ public class LoginPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				BevelBorder errorBorder = new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null,
-						alertColor);
-				BevelBorder fineBorder = new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null,
-						Color.WHITE);
 				boolean err = false;
 				if (userNameField.getText().isEmpty()) {
-					userNameField.setBorder(errorBorder);
+					userNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					userNameField.setBorder(fineBorder);
+					userNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				if (passwordField.getPassword().length == 0) {
-					passwordField.setBorder(errorBorder);
+					passwordField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					passwordField.setBorder(fineBorder);
+					passwordField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// start the chat
-				if (!err) {
+				if(!err){
 					/*
 					 * connect to server here
 					 */

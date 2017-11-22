@@ -41,7 +41,6 @@ public class RegisterPanel extends JPanel {
 	private Color labelForground = LoginFrame.labelForground;
 	private Color fieldForground = LoginFrame.fieldForground;
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
-	private Color alertColor = LoginFrame.alertColor;
 
 	private int labelX = 10, labelY = 19, labelWidth = 217, labelHeight = 20, labelSpacing = 25;
 
@@ -186,52 +185,59 @@ public class RegisterPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				// user name
-				BevelBorder errorBorder = new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null,
-						alertColor);
-				BevelBorder fineBorder = new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null,
-						Color.WHITE);
-
 				boolean err = false;
 				if (userNameField.getText().isEmpty()) {
-					userNameField.setBorder(errorBorder);
+					userNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					userNameField.setBorder(fineBorder);
+					userNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// first name
 				if (userFirstNameField.getText().isEmpty()) {
-					userFirstNameField.setBorder(errorBorder);
+					userFirstNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					userFirstNameField.setBorder(fineBorder);
+					userFirstNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// last name
 				if (userLastNameField.getText().isEmpty()) {
-					userLastNameField.setBorder(errorBorder);
+					userLastNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					userLastNameField.setBorder(fineBorder);
+					userLastNameField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// email
 				if (emailField.getText().isEmpty()) {
-					emailField.setBorder(errorBorder);
+					emailField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					emailField.setBorder(fineBorder);
+					emailField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// password
 				if (passwordField.getPassword().length == 0) {
-					passwordField.setBorder(errorBorder);
+					passwordField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					passwordField.setBorder(fineBorder);
+					passwordField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// confirm password
 				if (confirmPassField.getPassword().length == 0) {
-					confirmPassField.setBorder(errorBorder);
+					confirmPassField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.RED));
 					err = true;
 				} else {
-					confirmPassField.setBorder(fineBorder);
+					confirmPassField.setBorder(
+							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				if (!err) {
 					/*
@@ -241,8 +247,8 @@ public class RegisterPanel extends JPanel {
 					dialog.setUndecorated(true);
 					JLabel label = new JLabel("Please wait...");
 					dialog.setLocationRelativeTo(null);
-					dialog.setBounds(RegisterPanel.this.container.getX() + 100,
-							RegisterPanel.this.container.getY() + 100, 100, 50);
+					dialog.setBounds(RegisterPanel.this.container.getX() + 100, RegisterPanel.this.container.getY() + 100,
+							100, 50);
 					dialog.setTitle("Please Wait...");
 					dialog.add(label);
 					dialog.setBackground(labelForground);
