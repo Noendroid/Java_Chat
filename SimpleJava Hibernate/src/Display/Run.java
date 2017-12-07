@@ -14,7 +14,7 @@ public class Run {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		client = new Client("192.168.91.1", 8080);
+		client = new Client("fe80::817c:a98a:768b:a333%6", 8080);
 		login = new LoginFrame(client);
 		login.setVisible(true);
 	}
