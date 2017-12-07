@@ -20,6 +20,9 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
+import client.ClientComunicator;
+import tre.User;
+
 public class RegisterPanel extends JPanel {
 	/**
 	 * 
@@ -43,11 +46,13 @@ public class RegisterPanel extends JPanel {
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
 
 	private int labelX = 10, labelY = 19, labelWidth = 217, labelHeight = 20, labelSpacing = 25;
+	private ClientComunicator clientComunicator;
 
 	/**
 	 * Create the panel.
 	 */
-	public RegisterPanel(LoginFrame container, int w, int h) {
+	public RegisterPanel(LoginFrame container, ClientComunicator client, int w, int h) {
+		this.clientComunicator = client;
 		this.container = container;
 		this.width = w;
 		this.height = h;
@@ -243,20 +248,25 @@ public class RegisterPanel extends JPanel {
 					/*
 					 * register user check for errors go to login screen
 					 */
-					JDialog dialog = new JDialog();
-					dialog.setUndecorated(true);
-					JLabel label = new JLabel("Please wait...");
-					dialog.setLocationRelativeTo(null);
-					dialog.setBounds(RegisterPanel.this.container.getX() + 100, RegisterPanel.this.container.getY() + 100,
-							100, 50);
-					dialog.setTitle("Please Wait...");
-					dialog.add(label);
-					dialog.setBackground(labelForground);
-					dialog.pack();
-					dialog.setVisible(true);
-					RegisterPanel.this.container
-							.setContentPane(new LoginPanel(RegisterPanel.this.container, width, height));
-					dialog.dispose();
+					User newUser = new User();
+					newUser.setUserName(userNameField.getText());
+					newUser.setFirstName(userFirstNameField.getText());
+					newUser.setLastName(userLastNameField.getText());
+					newUser.setEmail(emailField.getText());
+					newUser.setPassword(String.copyValueOf(passwordField.getPassword()));
+
+					clientComunicator.register(newUser);
+//					boolean response = clientComunicator.register(newUser);
+//					System.out.println("response for the registration:\t" + response);
+//					if (response) {
+//						Run.showSuccess("Registered Successfuly!");
+//						RegisterPanel.this.container.setContentPane(
+//								new LoginPanel(RegisterPanel.this.container, clientComunicator, width, height));
+//
+//					} else {
+//						Run.showError("Error, Could not enter new user");
+//					}
+
 				}
 
 			}
@@ -272,7 +282,7 @@ public class RegisterPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				RegisterPanel.this.container
-						.setContentPane(new LoginPanel(RegisterPanel.this.container, width, height));
+						.setContentPane(new LoginPanel(RegisterPanel.this.container, clientComunicator, width, height));
 			}
 		});
 

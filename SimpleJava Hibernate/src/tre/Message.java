@@ -1,10 +1,11 @@
 package tre;
+
 import java.util.Date;
 
-public class Chat {
+public class Message {
 	private int id;
 	private int senderId;
-	private String messege;
+	private String message;
 	private Date date;
 
 	public int getId() {
@@ -22,13 +23,13 @@ public class Chat {
 	public void setSenderId(int senderId) {
 		this.senderId = senderId;
 	}
-	
-	public String getMessege() {
-		return messege;
+
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMessege(String messege) {
-		this.messege = messege;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public Date getDate() {

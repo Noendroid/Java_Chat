@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="paranamer-2.3.jar"/>
 	<classpathentry kind="lib" path="slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="mysql-connector-java-5.1.10-bin.jar"/>
+	<classpathentry kind="lib" path="gson-2.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

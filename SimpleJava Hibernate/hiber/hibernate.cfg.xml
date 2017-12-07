@@ -29,7 +29,8 @@
         <property name="hbm2ddl.auto">update</property>
 
         <!-- Mapping files -->
-        <mapping resource="chat.hbm.xml" />
+        <mapping resource="messege.hbm.xml" />
+        <mapping resource="user.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>

@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import client.Client;
 import tre.User;
 
 public class LoginFrame extends JFrame {
@@ -25,6 +26,11 @@ public class LoginFrame extends JFrame {
 	static JPanel contentPane;
 	static Point compCoords;
 	static LoginFrame frame;
+	static RegisterPanel registerPanel;
+	static LoginPanel loginPanel;
+	private Client client;
+
+	private int w, h;
 
 	public static Color screenBackground = new Color(33, 33, 33);
 	public static Color labelForground = new Color(0, 145, 234);
@@ -33,35 +39,27 @@ public class LoginFrame extends JFrame {
 	public static Color chatBackground = new Color(38, 50, 56);
 	public static Color chatForground = new Color(236, 239, 241);
 	public static Color exitColor = new Color(173, 20, 87);
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					frame = new LoginFrame();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static Color errorBackground = new Color(198, 40, 40);
+	public static Color successBackground = new Color(46, 125, 50);
+	public static Color whiteForground = new Color(255, 235, 238);
+	public static Color selfNameFont = new Color(46, 125, 50);
+	public static Color otherNameFont = new Color(255, 214, 0);
 
 	/**
 	 * Create the frame.
 	 */
-	public LoginFrame() {
+	public LoginFrame(Client client) {
+		this.client = client;
 		this.setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int w = 470, h = 300;
+		w = 470;
+		h = 300;
 		int x = screenSize.width / 2 - w / 2, y = screenSize.height / 2 - h / 2;
 		setBounds(x, y, w, h);
 
-		contentPane = new LoginPanel(this, w, h);
+		this.loginPanel = new LoginPanel(this, this.client, w, h);
+		contentPane = this.loginPanel;
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
@@ -105,11 +103,33 @@ public class LoginFrame extends JFrame {
 		this.addMouseListener(mouseWindowPressed);
 		this.addMouseMotionListener(mouseWindowDragged);
 	}
-	
-	public void openChat(User user, int port){
+
+	public void openChat(User user, int port) {
 		Run.login.dispose();
-		Run.chat = new ChatFrame(user);
+		Run.chat = new ChatFrame(user, client);
 		Run.chat.setVisible(true);
+	}
+
+	public void openLogin() {
+		loginPanel = new LoginPanel(this, this.client, w, h);
+		loginPanel.setVisible(true);
+		contentPane = loginPanel;
+		setContentPane(contentPane);
+	}
+
+	public void closeLogin() {
+		loginPanel.setVisible(false);
+	}
+
+	public void openRegistration() {
+		registerPanel = new RegisterPanel(this, client, w, h);
+		registerPanel.setVisible(true);
+		contentPane = registerPanel;
+		setContentPane(contentPane);
+	}
+
+	public static void closeRegistration() {
+		registerPanel.setVisible(false);
 	}
 
 }

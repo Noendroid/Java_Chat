@@ -4,17 +4,32 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="tre">
-    <class name="User" table="users">
-        <id name="userid" type="int" column="userid">
-            <generator class="increment" />
-        </id>
-        <property name="messege">
-            <column name="messege" />
-        </property>
-        <property name="date">
-            <column name="date" />
-        </property>
-    </class>
-      
-    
+	<class name="User" table="users">
+		
+		<id name="userid" type="int" column="userid">
+			<generator class="increment" />
+		</id>
+		
+		<property name="userName">
+			<column name="userName" />
+		</property>
+		
+		<property name="firstName">
+			<column name="firstName" />
+		</property>
+		
+		<property name="lastName">
+			<column name="lastName" />
+		</property>
+		
+		<property name="password">
+			<column name="password" />
+		</property>
+		
+		<property name="email">
+			<column name="email" />
+		</property>
+		
+	</class>
+
 </hibernate-mapping>

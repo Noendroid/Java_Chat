@@ -13,9 +13,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
+import client.ClientComunicator;
 import tre.User;
 
 public class ChatFrame extends JFrame {
@@ -27,6 +35,8 @@ public class ChatFrame extends JFrame {
 
 	static ChatFrame frame;
 
+	private ClientComunicator clientComunicator;
+
 	private JPanel contentPane;
 	private User connectedUser;
 
@@ -36,28 +46,35 @@ public class ChatFrame extends JFrame {
 	private Color chatBackground = LoginFrame.chatBackground;
 	private Color chatForground = LoginFrame.chatForground;
 	private Color disconnectColor = LoginFrame.exitColor;
+	private Color selfNameColorFont = LoginFrame.selfNameFont;
+	private Color otherNameColorFont = LoginFrame.otherNameFont;
+	private Color messegeColorFont = LoginFrame.whiteForground;
 
-	/**
-	 * Launch the application.
-	 */
-	// public static void main(String[] args) {
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	// frame = new ChatFrame(null);
-	// frame.setVisible(true);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
+	private JButton sendButton;
+	private JTextArea newMessageArea;
+	private JTextPane dialogArea;
+
+	private SimpleAttributeSet selfNameFont = new SimpleAttributeSet();
+	private SimpleAttributeSet otherNameFont = new SimpleAttributeSet();
+	private SimpleAttributeSet messageFont = new SimpleAttributeSet();
 
 	/**
 	 * Create the frame.
 	 */
-	public ChatFrame(User user) {
+
+	public ChatFrame(User user, ClientComunicator comunicator) {
 		this.connectedUser = user;
+		this.clientComunicator = comunicator;
+
+		StyleConstants.setFontFamily(selfNameFont, "Lemon");
+		StyleConstants.setForeground(selfNameFont, selfNameColorFont);
+
+		StyleConstants.setFontFamily(otherNameFont, "Lemon");
+		StyleConstants.setForeground(otherNameFont, otherNameColorFont);
+
+		StyleConstants.setFontFamily(messageFont, "Microsoft JhengHei UI");
+		StyleConstants.setForeground(messageFont, messegeColorFont);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		int w = 650;
@@ -75,23 +92,28 @@ public class ChatFrame extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		JTextArea dialogArea = new JTextArea();
+		dialogArea = new JTextPane();
 		dialogArea.setBackground(new Color(38, 50, 56));
 		dialogArea.setForeground(chatForground);
 		dialogArea.setEditable(false);
 		dialogArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-		dialogArea.setText("sample text");
 		dialogArea.setBounds(10, 54, 614, 482);
-		panel.add(dialogArea);
+		JScrollPane dialogScroll = new JScrollPane(dialogArea);
+		dialogScroll.setBounds(10, 54, 614, 482);
+		panel.add(dialogScroll);
 
-		JTextArea newMessegeArea = new JTextArea();
-		newMessegeArea.setBackground(chatBackground);
-		newMessegeArea.setForeground(chatForground);
-		newMessegeArea.setCaretColor(chatForground);
-		newMessegeArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-		newMessegeArea.setText("sample text");
-		newMessegeArea.setBounds(10, 547, 538, 52);
-		panel.add(newMessegeArea);
+		newMessageArea = new JTextArea();
+		newMessageArea.setBackground(chatBackground);
+		newMessageArea.setForeground(chatForground);
+		newMessageArea.setCaretColor(chatForground);
+		newMessageArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
+		newMessageArea.setText("sample text");
+		newMessageArea.setBounds(10, 547, 538, 52);
+		newMessageArea.setWrapStyleWord(true);
+		newMessageArea.setLineWrap(true);
+		JScrollPane newMessageScroll = new JScrollPane(newMessageArea);
+		newMessageScroll.setBounds(10, 547, 538, 52);
+		panel.add(newMessageScroll);
 
 		JLabel loggedInAsLabel = new JLabel("Logged in as:");
 		loggedInAsLabel.setFont(new Font("Calibri Light", Font.PLAIN, 13));
@@ -99,17 +121,39 @@ public class ChatFrame extends JFrame {
 		loggedInAsLabel.setBounds(10, 11, 73, 14);
 		panel.add(loggedInAsLabel);
 
-		JLabel firstLastNameLabel = new JLabel("first name and last name");
+		JLabel firstLastNameLabel = new JLabel(
+				this.connectedUser.getFirstName() + " " + this.connectedUser.getLastName());
 		firstLastNameLabel.setFont(new Font("Calibri Light", Font.BOLD, 14));
 		firstLastNameLabel.setForeground(labelForground);
 		firstLastNameLabel.setBounds(10, 29, 321, 14);
 		panel.add(firstLastNameLabel);
 
-		JButton sendButton = new JButton("send");
+		sendButton = new JButton("send");
 		sendButton.setBackground(buttonsBackground);
 		sendButton.setForeground(labelForground);
 		sendButton.setBounds(558, 547, 66, 52);
 		sendButton.setBorder(null);
+		sendButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String content = newMessageArea.getText();
+				clientComunicator.sendMessage(connectedUser, content);
+//				String senderName = connectedUser.getFirstName() + ": ";
+//				String content = newMessegeArea.getText() + "\n";
+//				// Add some text
+//				try {
+//					dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+//							senderName, selfNameFont);
+//					dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+//							content, messageFont);
+//
+//				} catch (BadLocationException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			}
+		});
 		panel.add(sendButton);
 
 		JButton disconnectButton = new JButton("Disconnect");
@@ -129,9 +173,43 @@ public class ChatFrame extends JFrame {
 
 	}
 
+	public void writeSelfMessegeToDialog(String content) {
+//		String senderName = connectedUser.getFirstName() + ": ";
+		String senderName = "You: ";
+		content += "\n";
+		// Add some text
+		try {
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
+					selfNameFont);
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), content,
+					messageFont);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void writeOtherMessegeToDialog(User otherUser, String content) {
+		String senderName = otherUser.getFirstName() + ": ";
+		content += "\n";
+		// Add some text
+		try {
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
+					otherNameFont);
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), content,
+					messageFont);
+
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public int getConnectedUserId(){
+		return connectedUser.getUserid();
+	}
 	public void disconnect() {
 		Run.chat.dispose();
-		Run.login = new LoginFrame();
+		Run.login = new LoginFrame(Run.client);
 		Run.login.setVisible(true);
 	}
 }

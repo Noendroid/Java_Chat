@@ -9,10 +9,10 @@ import java.util.List;
 public class App {
 
 	public static void main(String[] args) {
-		ChatDao cDao = new ChatDao();
+		MessageDao cDao = new MessageDao();
 		// Add message
-		Chat message = new Chat();
-		message.setMessege("Hello World");
+		Message message = new Message();
+		message.setMessage("Hello World");
 		Date currDate;
 		try {
 			currDate = new SimpleDateFormat("yyyy-MM-dd").parse("1986-01-02");
@@ -22,9 +22,9 @@ public class App {
 			e.printStackTrace();
 		}
 		cDao.addMessege(message);
-		List<Chat> chats = cDao.getAllMesseges();
-		Chat givenMessege = cDao.getMessegeById(chats.get(chats.size() - 1).getId());
-		givenMessege.setMessege("this messege was changed!");
+		List<Message> chats = cDao.getAllMesseges();
+		Message givenMessege = cDao.getMessegeById(chats.get(chats.size() - 1).getId());
+		givenMessege.setMessage("this messege was changed!");
 		cDao.updateMessege(givenMessege);
 
 		/*

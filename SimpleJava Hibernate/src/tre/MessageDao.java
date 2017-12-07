@@ -9,15 +9,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 
-public class ChatDao {
+public class MessageDao {
 
-    public void addMessege(Chat chat) {
+    public void addMessege(Message message) {
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
        
         try {
             trns = session.beginTransaction();
-            session.save(chat);
+            session.save(message);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             if (trns != null) {
@@ -30,13 +30,13 @@ public class ChatDao {
         }
     }
 
-    public void deleteMessege(int chatid) {
+    public void deleteMessege(int id) {
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
-            Chat Chat = (Chat) session.load(Chat.class, new Integer(chatid));
-            session.delete(Chat);
+            Message message = (Message) session.load(Message.class, new Integer(id));
+            session.delete(message);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             if (trns != null) {
@@ -49,12 +49,12 @@ public class ChatDao {
         }
     }
 
-    public void updateMessege(Chat chat) {
+    public void updateMessege(Message message) {
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
-            session.update(chat);
+            session.update(message);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             if (trns != null) {
@@ -67,32 +67,32 @@ public class ChatDao {
         }
     }
 
-    public List<Chat> getAllMesseges() {
-        List<Chat> chats = new ArrayList<Chat>();
+    public List<Message> getAllMesseges() {
+        List<Message> messages = new ArrayList<Message>();
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
-            chats = session.createQuery("from Chat").list();
+            messages = session.createQuery("from Message").list();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
             session.flush();
             session.close();
         }
-        return chats;
+        return messages;
     }
 
-    public Chat getMessegeById(int chatid) {
-        Chat Chat = null;
+    public Message getMessegeById(int chatid) {
+        Message Chat = null;
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
-            String queryString = "from Chat where id = :chatId";
+            String queryString = "from Message where id = :messageId";
             Query query = session.createQuery(queryString);
-            query.setInteger("chatId", chatid);
-            Chat = (Chat) query.uniqueResult();
+            query.setInteger("messageId", chatid);
+            Chat = (Message) query.uniqueResult();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {

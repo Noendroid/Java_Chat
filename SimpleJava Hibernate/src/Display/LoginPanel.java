@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,13 +18,18 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
+import client.Client;
+import client.ClientComunicator;
+import tre.User;
+import tre.UserDao;
+
 public class LoginPanel extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	static Point compCoords;
 	private JTextField userNameField;
 
@@ -35,14 +41,17 @@ public class LoginPanel extends JPanel {
 	private Color labelForground = LoginFrame.labelForground;
 	private Color fieldForground = LoginFrame.fieldForground;
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
-	
+
 	private JPasswordField passwordField;
+
+	private ClientComunicator clientComunicator;
 
 	/**
 	 * Create the panel.
 	 */
-	public LoginPanel(LoginFrame container, int w, int h) {
+	public LoginPanel(final LoginFrame container, ClientComunicator client, int w, int h) {
 		this.container = container;
+		this.clientComunicator = client;
 		this.width = w;
 		this.height = h;
 		setBounds(0, 0, width, height);
@@ -148,11 +157,32 @@ public class LoginPanel extends JPanel {
 							new BevelBorder(BevelBorder.RAISED, screenBackground, screenBackground, null, Color.WHITE));
 				}
 				// start the chat
-				if(!err){
+				if (!err) {
 					/*
 					 * connect to server here
 					 */
-					LoginPanel.this.container.openChat(null, 0);
+					String username = userNameField.getText();
+					String password = String.copyValueOf(passwordField.getPassword());
+					
+					System.out.println("trying to connect with user:\t"+username);
+					User connectedUser = clientComunicator.login(username, password);
+					
+//					if (connectedUser != null) {
+//						System.out.println("connection success");
+//						LoginPanel.this.container.openChat(connectedUser, 0);
+//					} 
+//					else {
+//						System.out.println("wrong input");
+//						JDialog dialog = new JDialog();
+//						JLabel label = new JLabel("Wrong username or password");
+//						dialog.setLocationRelativeTo(null);
+//						dialog.setBounds(LoginPanel.this.container.getX() + 100, LoginPanel.this.container.getY() + 100,
+//								100, 50);
+//						dialog.add(label);
+//						dialog.setBackground(labelForground);
+//						dialog.pack();
+//						dialog.setVisible(true);
+//					}
 				}
 			}
 		});
@@ -163,7 +193,8 @@ public class LoginPanel extends JPanel {
 		registerLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LoginPanel.this.container.setContentPane(new RegisterPanel(LoginPanel.this.container, width, height));
+				container.closeLogin();
+				container.openRegistration();
 			}
 		});
 		registerLabel.setFont(new Font("Calibri Light", Font.PLAIN, 12));

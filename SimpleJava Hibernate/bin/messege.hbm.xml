@@ -4,19 +4,24 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="tre">
-    <class name="Chat" table="chats">
+    <class name="Message" table="messages">
+    
         <id name="id" type="int" column="id">
             <generator class="increment" />
         </id>
-        <property name="senderId">
-            <column name="senderId" />
+        
+        <property name="message">
+            <column name="content" />
         </property>
-        <property name="messege">
-            <column name="messege" />
-        </property>
+        
         <property name="date">
             <column name="date" />
         </property>	
+        
+        <property name="senderId">
+            <column name="senderId" />
+        </property>
+        
     </class>
       
     
