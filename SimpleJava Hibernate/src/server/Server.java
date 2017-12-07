@@ -30,11 +30,11 @@ public class Server implements ServerComunicator, Runnable {
 	private int port = 8080;
 	ServerSocket server;
 	Socket recieved;
-	HashMap<String, DataOutputStream> connectedUsers;
+	HashMap<String, ServerWorkingThread> connectedUsers;
 
 	public Server() {
 		try {
-			connectedUsers = new HashMap<String, DataOutputStream>();
+			connectedUsers = new HashMap<String, ServerWorkingThread>();
 			server = new ServerSocket(port);
 			System.out.println("server-ip4:\t" + Inet4Address.getLocalHost());
 			Thread a = new Thread(this);
@@ -52,9 +52,10 @@ public class Server implements ServerComunicator, Runnable {
 			try {
 				recieved = server.accept();
 				DataOutputStream data = new DataOutputStream(recieved.getOutputStream());
-				connectedUsers.put(recieved.getLocalSocketAddress().toString(), data);
 				System.out.println("new connection with ip:\t" + recieved.getLocalSocketAddress().toString());
-				new ServerWorkingThread(recieved, this);
+
+				ServerWorkingThread serverWorkingThread = new ServerWorkingThread(recieved, this);
+				connectedUsers.put(recieved.getLocalSocketAddress().toString(), serverWorkingThread);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -93,16 +94,11 @@ public class Server implements ServerComunicator, Runnable {
 		Gson gson = new Gson();
 		String userInJson = gson.toJson(sender);
 		String messageInJson = gson.toJson(message);
-		
+
 		String dataToTransfer = RequestType.MESSEGE_RECIVED + "|" + userInJson + "|" + messageInJson;
-		
-		for (DataOutputStream stream : connectedUsers.values()) {
-			try {
-				stream.writeUTF(dataToTransfer);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+		for (ServerWorkingThread stream : connectedUsers.values()) {
+			stream.write(dataToTransfer);
 		}
 
 	}
@@ -125,7 +121,7 @@ public class Server implements ServerComunicator, Runnable {
 		message.setMessage(content);
 		message.setDate(new Date());
 		messageDao.addMessege(message);
-		
+
 		return message;
 	}
 
