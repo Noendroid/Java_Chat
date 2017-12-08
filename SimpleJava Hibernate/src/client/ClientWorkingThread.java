@@ -44,11 +44,11 @@ public class ClientWorkingThread {
 	}
 
 	private void init(Socket soc) throws IOException {
-		out = soc.getOutputStream();
 		in = soc.getInputStream();
+		out = soc.getOutputStream();
 
-		outData = new DataOutputStream(out);
 		read = new DataInputStream(in);
+		outData = new DataOutputStream(out);
 
 	}
 

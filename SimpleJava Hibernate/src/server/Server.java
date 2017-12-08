@@ -27,7 +27,7 @@ import tre.User;
 import tre.UserDao;
 
 public class Server implements ServerComunicator, Runnable {
-	private int port = 8080;
+	private int port = 81;
 	ServerSocket server;
 	Socket recieved;
 	HashMap<String, ServerWorkingThread> connectedUsers;
@@ -51,7 +51,6 @@ public class Server implements ServerComunicator, Runnable {
 		while (true) {
 			try {
 				recieved = server.accept();
-				DataOutputStream data = new DataOutputStream(recieved.getOutputStream());
 				System.out.println("new connection with ip:\t" + recieved.getLocalSocketAddress().toString());
 
 				ServerWorkingThread serverWorkingThread = new ServerWorkingThread(recieved, this);

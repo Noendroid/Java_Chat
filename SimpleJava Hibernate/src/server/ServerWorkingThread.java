@@ -37,11 +37,11 @@ public class ServerWorkingThread {
 	}
 
 	private void init(Socket soc) throws IOException {
-		in = soc.getInputStream();
 		out = soc.getOutputStream();
+		in = soc.getInputStream();
 
-		read = new DataInputStream(in);
 		outData = new DataOutputStream(out);
+		read = new DataInputStream(in);
 
 	}
 

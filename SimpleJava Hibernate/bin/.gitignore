@@ -1,8 +1,3 @@
+/server/
 /Display/
 /client/
-/hibernate.cfg.xml
-/messege.hbm.xml
-/server/
-/tre/
-/user.hbm.out.xml
-/user.hbm.xml
