@@ -70,7 +70,7 @@ public class ServerReader extends Thread {
 
 			if (connectedUser != null) {
 				String send = RequestType.LOGIN + "|" + RequestType.SUCCESS + "|" + gson.toJson(connectedUser);
-				System.out.println(send);
+//				System.out.println(send);
 				serverWorkingThred
 						.write(RequestType.LOGIN + "|" + RequestType.SUCCESS + "|" + gson.toJson(connectedUser));
 			} else {
@@ -95,8 +95,9 @@ public class ServerReader extends Thread {
 			String content = arr[2];
 			User sender = gson.fromJson(userInJson, User.class);
 			Message newMessage = serverComunicator.addNewMessege(sender, content);
+			String messageInJson = gson.toJson(newMessage);
 			if (newMessage != null) {
-				serverWorkingThred.write(RequestType.MESSEGE_SEND + "|" + RequestType.SUCCESS + "|" + content);
+				serverWorkingThred.write(RequestType.MESSEGE_SEND + "|" + RequestType.SUCCESS + "|" + messageInJson);
 				serverComunicator.sendMultyCastMessage(sender, newMessage);
 			} else {
 				serverWorkingThred.write(RequestType.MESSEGE_SEND + "|" + RequestType.FAILURE);

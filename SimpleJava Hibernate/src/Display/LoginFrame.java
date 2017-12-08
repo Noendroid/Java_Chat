@@ -42,8 +42,9 @@ public class LoginFrame extends JFrame {
 	public static Color errorBackground = new Color(198, 40, 40);
 	public static Color successBackground = new Color(46, 125, 50);
 	public static Color whiteForground = new Color(255, 235, 238);
-	public static Color selfNameFont = new Color(46, 125, 50);
-	public static Color otherNameFont = new Color(255, 214, 0);
+	public static Color selfNameForground = new Color(46, 125, 50);
+	public static Color otherNameForground = new Color(255, 214, 0);
+	public static Color dateForground = new Color(96, 125, 139);
 
 	/**
 	 * Create the frame.

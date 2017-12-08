@@ -30,11 +30,11 @@ public class Server implements ServerComunicator, Runnable {
 	private int port = 81;
 	ServerSocket server;
 	Socket recieved;
-	HashMap<String, ServerWorkingThread> connectedUsers;
+	HashMap<Integer, ServerWorkingThread> connectedUsers;
 
 	public Server() {
 		try {
-			connectedUsers = new HashMap<String, ServerWorkingThread>();
+			connectedUsers = new HashMap<Integer, ServerWorkingThread>();
 			server = new ServerSocket(port);
 			System.out.println("server-ip4:\t" + Inet4Address.getLocalHost());
 			Thread a = new Thread(this);
@@ -54,7 +54,7 @@ public class Server implements ServerComunicator, Runnable {
 				System.out.println("new connection with ip:\t" + recieved.getLocalSocketAddress().toString());
 
 				ServerWorkingThread serverWorkingThread = new ServerWorkingThread(recieved, this);
-				connectedUsers.put(recieved.getLocalSocketAddress().toString(), serverWorkingThread);
+				connectedUsers.put(connectedUsers.size() + 1, serverWorkingThread);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

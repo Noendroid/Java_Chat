@@ -18,14 +18,16 @@ public class Client implements ClientComunicator {
 	public Client(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
-		connect();
+		//connect();
 
 	}
 
 	public void connect() {
 		try {
-			connection = new Socket(ip, port);
-			work = new ClientWorkingThread(connection, this);
+			if(connection == null){
+				connection = new Socket(ip, port);
+				work = new ClientWorkingThread(connection, this);				
+			}
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,6 +57,7 @@ public class Client implements ClientComunicator {
 	}
 
 	public void register(User newUser) {
+		connect();
 		Gson gson = new Gson();
 
 		String userInJson = gson.toJson(newUser);

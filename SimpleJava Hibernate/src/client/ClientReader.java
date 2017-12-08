@@ -67,8 +67,10 @@ public class ClientReader extends Thread {
 		case RequestType.MESSEGE_SEND:
 			if (arr[1].equals("" + RequestType.SUCCESS)) {
 				String content = arr[2];
+				Gson gson = new Gson();
+				Message message = gson.fromJson(content, Message.class);
 				ChatFrame chat = Run.getChat();
-				chat.writeSelfMessegeToDialog(content);
+				chat.writeSelfMessegeToDialog(message);
 			} else {
 				Run.showError("Error, Could not send the messege..");
 			}
@@ -82,7 +84,7 @@ public class ClientReader extends Thread {
 			Message message = gson.fromJson(arr[2], Message.class);
 
 			if (sender.getUserid() != chat.getConnectedUserId()) {
-				chat.writeOtherMessegeToDialog(sender, message.getMessage());
+				chat.writeOtherMessegeToDialog(sender, message);
 			}
 			break;
 		default:

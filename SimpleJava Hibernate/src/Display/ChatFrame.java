@@ -24,6 +24,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import client.ClientComunicator;
+import tre.Message;
 import tre.User;
 
 public class ChatFrame extends JFrame {
@@ -46,9 +47,10 @@ public class ChatFrame extends JFrame {
 	private Color chatBackground = LoginFrame.chatBackground;
 	private Color chatForground = LoginFrame.chatForground;
 	private Color disconnectColor = LoginFrame.exitColor;
-	private Color selfNameColorFont = LoginFrame.selfNameFont;
-	private Color otherNameColorFont = LoginFrame.otherNameFont;
+	private Color selfNameColorFont = LoginFrame.selfNameForground;
+	private Color otherNameColorFont = LoginFrame.otherNameForground;
 	private Color messegeColorFont = LoginFrame.whiteForground;
+	private Color dateColorForground = LoginFrame.dateForground;
 
 	private JButton sendButton;
 	private JTextArea newMessageArea;
@@ -57,6 +59,7 @@ public class ChatFrame extends JFrame {
 	private SimpleAttributeSet selfNameFont = new SimpleAttributeSet();
 	private SimpleAttributeSet otherNameFont = new SimpleAttributeSet();
 	private SimpleAttributeSet messageFont = new SimpleAttributeSet();
+	private SimpleAttributeSet dateFont = new SimpleAttributeSet();
 
 	/**
 	 * Create the frame.
@@ -71,6 +74,10 @@ public class ChatFrame extends JFrame {
 
 		StyleConstants.setFontFamily(otherNameFont, "Lemon");
 		StyleConstants.setForeground(otherNameFont, otherNameColorFont);
+
+		StyleConstants.setFontFamily(dateFont, "Lemon");
+		StyleConstants.setFontSize(dateFont, 9);
+		StyleConstants.setForeground(dateFont, dateColorForground);
 
 		StyleConstants.setFontFamily(messageFont, "Microsoft JhengHei UI");
 		StyleConstants.setForeground(messageFont, messegeColorFont);
@@ -139,19 +146,19 @@ public class ChatFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String content = newMessageArea.getText();
 				clientComunicator.sendMessage(connectedUser, content);
-//				String senderName = connectedUser.getFirstName() + ": ";
-//				String content = newMessegeArea.getText() + "\n";
-//				// Add some text
-//				try {
-//					dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
-//							senderName, selfNameFont);
-//					dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
-//							content, messageFont);
-//
-//				} catch (BadLocationException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				// String senderName = connectedUser.getFirstName() + ": ";
+				// String content = newMessegeArea.getText() + "\n";
+				// // Add some text
+				// try {
+				// dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+				// senderName, selfNameFont);
+				// dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+				// content, messageFont);
+				//
+				// } catch (BadLocationException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
 			}
 		});
 		panel.add(sendButton);
@@ -173,40 +180,51 @@ public class ChatFrame extends JFrame {
 
 	}
 
-	public void writeSelfMessegeToDialog(String content) {
-//		String senderName = connectedUser.getFirstName() + ": ";
+	public void writeSelfMessegeToDialog(Message message) {
+		// String senderName = connectedUser.getFirstName() + ": ";
 		String senderName = "You: ";
-		content += "\n";
+		message.setMessage(message.getMessage() + "\n");
 		// Add some text
 		try {
 			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
 					selfNameFont);
-			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), content,
-					messageFont);
+			
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getMessage(), messageFont);
+			
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getDate().toString() + "\n\n", dateFont);
+			
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void writeOtherMessegeToDialog(User otherUser, String content) {
+	public void writeOtherMessegeToDialog(User otherUser, Message message) {
 		String senderName = otherUser.getFirstName() + ": ";
-		content += "\n";
+		message.setMessage(message.getMessage() + "\n");
 		// Add some text
 		try {
 			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
 					otherNameFont);
-			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), content,
-					messageFont);
+			
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getMessage(), messageFont);
+			
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getDate().toString() + "\n\n", dateFont);
 
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public int getConnectedUserId(){
+
+	public int getConnectedUserId() {
 		return connectedUser.getUserid();
 	}
+
 	public void disconnect() {
 		Run.chat.dispose();
 		Run.login = new LoginFrame(Run.client);
