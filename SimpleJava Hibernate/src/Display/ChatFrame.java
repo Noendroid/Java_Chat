@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -146,19 +148,6 @@ public class ChatFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String content = newMessageArea.getText();
 				clientComunicator.sendMessage(connectedUser, content);
-				// String senderName = connectedUser.getFirstName() + ": ";
-				// String content = newMessegeArea.getText() + "\n";
-				// // Add some text
-				// try {
-				// dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
-				// senderName, selfNameFont);
-				// dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
-				// content, messageFont);
-				//
-				// } catch (BadLocationException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
 			}
 		});
 		panel.add(sendButton);
@@ -177,6 +166,51 @@ public class ChatFrame extends JFrame {
 			}
 		});
 		panel.add(disconnectButton);
+		
+		this.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				disconnect();
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 
@@ -226,6 +260,7 @@ public class ChatFrame extends JFrame {
 	}
 
 	public void disconnect() {
+		clientComunicator.disconnect();
 		Run.chat.dispose();
 		Run.login = new LoginFrame(Run.client);
 		Run.login.setVisible(true);

@@ -70,7 +70,7 @@ public class ServerReader extends Thread {
 
 			if (connectedUser != null) {
 				String send = RequestType.LOGIN + "|" + RequestType.SUCCESS + "|" + gson.toJson(connectedUser);
-//				System.out.println(send);
+				// System.out.println(send);
 				serverWorkingThred
 						.write(RequestType.LOGIN + "|" + RequestType.SUCCESS + "|" + gson.toJson(connectedUser));
 			} else {
@@ -105,12 +105,22 @@ public class ServerReader extends Thread {
 			break;
 		case RequestType.DISCONNECT:
 
-			// serverWorkingThred.write(RequestType.DISCONNECT + "|" + "1");
+			try {
+				serverWorkingThred.disconnect();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	public void disconnect() throws IOException {
+		myInputStream.close();
+		myOutPutStream.close();
 	}
 
 }

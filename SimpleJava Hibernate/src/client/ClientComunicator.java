@@ -8,4 +8,6 @@ public interface ClientComunicator {
 	public void register(User newUser);
 	
 	public void sendMessage(User sender, String content);
+	
+	public void disconnect();
 }

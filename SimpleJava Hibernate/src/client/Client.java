@@ -73,4 +73,9 @@ public class Client implements ClientComunicator {
 		write(dataToTransfer);
 	}
 
+	@Override
+	public void disconnect() {
+		write(RequestType.DISCONNECT + "|" + "1");
+	}
+
 }

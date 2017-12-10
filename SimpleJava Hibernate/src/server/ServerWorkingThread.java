@@ -21,14 +21,16 @@ public class ServerWorkingThread {
 	private DataOutputStream outData;
 	private ServerReader readerThread;
 	private PrintWriter print;
-	private ServerComunicator com;
+	private ServerComunicator serverComunicator;
+	private int indexInHash;
 
-	public ServerWorkingThread(Socket soc, ServerComunicator a) {
-		this.com = a;
+	public ServerWorkingThread(Socket soc, ServerComunicator a, int indexInHash) {
+		this.indexInHash = indexInHash;
+		this.serverComunicator = a;
 		this.soc = soc;
 		try {
 			init(soc);
-			readerThread = new ServerReader(outData, read, com, this);
+			readerThread = new ServerReader(outData, read, serverComunicator, this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,6 +54,17 @@ public class ServerWorkingThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	public void disconnect() throws IOException {
+		// in.close();
+		out.close();
+		// read.close();
+		outData.close();
+
+		readerThread.disconnect();
+		serverComunicator.disconnect(this.indexInHash);
 
 	}
 

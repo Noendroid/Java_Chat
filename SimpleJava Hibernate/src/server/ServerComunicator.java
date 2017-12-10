@@ -19,4 +19,6 @@ public interface ServerComunicator {
 
 	public boolean Register(User newUser);
 
+	public void disconnect(int indexInHash);
+
 }

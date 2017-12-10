@@ -53,8 +53,9 @@ public class Server implements ServerComunicator, Runnable {
 				recieved = server.accept();
 				System.out.println("new connection with ip:\t" + recieved.getLocalSocketAddress().toString());
 
-				ServerWorkingThread serverWorkingThread = new ServerWorkingThread(recieved, this);
-				connectedUsers.put(connectedUsers.size() + 1, serverWorkingThread);
+				int indexInHash = connectedUsers.size() + 1;
+				ServerWorkingThread serverWorkingThread = new ServerWorkingThread(recieved, this, indexInHash);
+				connectedUsers.put(indexInHash, serverWorkingThread);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -126,6 +127,18 @@ public class Server implements ServerComunicator, Runnable {
 
 	public static void main(String[] args) {
 		Server server = new Server();
+	}
+
+	@Override
+	public void disconnect(int indexInHash) {
+		try {
+			System.out.println("user disconnected - " + indexInHash);
+			connectedUsers.get(indexInHash).disconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		connectedUsers.remove(indexInHash);
 	}
 
 }
