@@ -58,13 +58,13 @@ public class ServerWorkingThread {
 	}
 
 	public void disconnect() throws IOException {
-		// in.close();
+		in.close();
 		out.close();
-		// read.close();
+		read.close();
 		outData.close();
 
 		readerThread.disconnect();
-		serverComunicator.disconnect(this.indexInHash);
+		//serverComunicator.disconnect(this.indexInHash);
 
 	}
 

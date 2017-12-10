@@ -121,6 +121,12 @@ public class ServerReader extends Thread {
 	public void disconnect() throws IOException {
 		myInputStream.close();
 		myOutPutStream.close();
+		try {
+			this.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
