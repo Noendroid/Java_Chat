@@ -75,7 +75,9 @@ public class Client implements ClientComunicator {
 
 	@Override
 	public void disconnect() {
+		System.out.println("disconnecting");
 		write(RequestType.DISCONNECT + "|" + "1");
+		work.disconnect();
 	}
 
 }

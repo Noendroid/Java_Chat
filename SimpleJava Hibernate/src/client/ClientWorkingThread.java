@@ -70,16 +70,16 @@ public class ClientWorkingThread {
 		System.out.println("sending:\t" + dataToTransfer);
 		write(dataToTransfer);
 
-//		String response;
-//		response = read();
-//		String[] arr = response.split("|");
-//		if (arr[0].equals('0')) {
-//			return null;
-//		} else {
-//			Gson gson = new Gson();
-//			User ans = gson.fromJson(arr[1], User.class);
-//			return ans;
-//		}
+		// String response;
+		// response = read();
+		// String[] arr = response.split("|");
+		// if (arr[0].equals('0')) {
+		// return null;
+		// } else {
+		// Gson gson = new Gson();
+		// User ans = gson.fromJson(arr[1], User.class);
+		// return ans;
+		// }
 	}
 
 	public boolean Register(User newUser) throws IOException {
@@ -99,5 +99,23 @@ public class ClientWorkingThread {
 			return true;
 		}
 	}
-	
+
+	public void disconnect() {
+		
+		try {
+			readerThread.setStop(true);
+			in.close();
+			out.close();
+			read.close();
+			outData.close();
+			readerThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

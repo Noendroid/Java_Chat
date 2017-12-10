@@ -64,7 +64,7 @@ public class ServerWorkingThread {
 		outData.close();
 
 		readerThread.disconnect();
-		//serverComunicator.disconnect(this.indexInHash);
+		// serverComunicator.disconnect(this.indexInHash);
 
 	}
 

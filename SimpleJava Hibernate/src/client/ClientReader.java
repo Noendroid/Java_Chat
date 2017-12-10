@@ -38,6 +38,12 @@ public class ClientReader extends Thread {
 				e.printStackTrace();
 			}
 		}
+		try {
+			buff.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void process(String ans) {
@@ -87,9 +93,14 @@ public class ClientReader extends Thread {
 				chat.writeOtherMessegeToDialog(sender, message);
 			}
 			break;
+//		case RequestType.DISCONNECT:
+//			if (arr[1] == "1")
+//				stop = true;
 		default:
 			break;
 		}
-
+	}
+	public void setStop(boolean state){
+		this.stop = state;
 	}
 }

@@ -46,6 +46,12 @@ public class ServerReader extends Thread {
 			}
 
 		}
+		try {
+			disconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -117,7 +123,9 @@ public class ServerReader extends Thread {
 		}
 
 	}
-
+	public void setStop(boolean state){
+		this.stop = true;
+	}
 	public void disconnect() throws IOException {
 		myInputStream.close();
 		myOutPutStream.close();

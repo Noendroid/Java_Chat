@@ -131,6 +131,7 @@ public class Server implements ServerComunicator, Runnable {
 
 	@Override
 	public void disconnect(int indexInHash) {
+//		connectedUsers.get(indexInHash).write(RequestType.DISCONNECT + "|" + "1");
 		try {
 			System.out.println("user disconnected - " + indexInHash);
 			connectedUsers.get(indexInHash).disconnect();
