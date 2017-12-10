@@ -163,26 +163,9 @@ public class LoginPanel extends JPanel {
 					 */
 					String username = userNameField.getText();
 					String password = String.copyValueOf(passwordField.getPassword());
-					
-					System.out.println("trying to connect with user:\t"+username);
+
+					System.out.println("trying to connect with user:\t" + username);
 					User connectedUser = clientComunicator.login(username, password);
-					
-//					if (connectedUser != null) {
-//						System.out.println("connection success");
-//						LoginPanel.this.container.openChat(connectedUser, 0);
-//					} 
-//					else {
-//						System.out.println("wrong input");
-//						JDialog dialog = new JDialog();
-//						JLabel label = new JLabel("Wrong username or password");
-//						dialog.setLocationRelativeTo(null);
-//						dialog.setBounds(LoginPanel.this.container.getX() + 100, LoginPanel.this.container.getY() + 100,
-//								100, 50);
-//						dialog.add(label);
-//						dialog.setBackground(labelForground);
-//						dialog.pack();
-//						dialog.setVisible(true);
-//					}
 				}
 			}
 		});

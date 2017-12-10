@@ -24,7 +24,7 @@ public class Client implements ClientComunicator {
 
 	public void connect() {
 		try {
-			if(connection == null){
+			if(connection == null || connection.isClosed()){
 				connection = new Socket(ip, port);
 				work = new ClientWorkingThread(connection, this);				
 			}
