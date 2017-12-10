@@ -116,7 +116,7 @@ public class ChatFrame extends JFrame {
 		newMessageArea.setForeground(chatForground);
 		newMessageArea.setCaretColor(chatForground);
 		newMessageArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-		newMessageArea.setText("sample text");
+		newMessageArea.setText("");
 		newMessageArea.setBounds(10, 547, 538, 52);
 		newMessageArea.setWrapStyleWord(true);
 		newMessageArea.setLineWrap(true);
@@ -147,6 +147,7 @@ public class ChatFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String content = newMessageArea.getText();
+				newMessageArea.setText("");
 				clientComunicator.sendMessage(connectedUser, content);
 			}
 		});
@@ -172,7 +173,7 @@ public class ChatFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				// TODO Auto-generated method stub
-				disconnect();
+				clientComunicator.disconnect();
 			}
 
 			@Override
