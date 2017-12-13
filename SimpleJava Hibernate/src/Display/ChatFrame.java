@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import javax.swing.text.StyleConstants;
 
 import client.ClientComunicator;
 import tre.Message;
+import tre.RequestType;
 import tre.User;
 
 public class ChatFrame extends JFrame {
@@ -46,6 +48,7 @@ public class ChatFrame extends JFrame {
 	private Color screenBackground = LoginFrame.screenBackground;
 	private Color labelForground = LoginFrame.labelForground;
 	private Color buttonsBackground = LoginFrame.buttonsBackground;
+	private Color fieldBackground = LoginFrame.fieldForground;
 	private Color chatBackground = LoginFrame.chatBackground;
 	private Color chatForground = LoginFrame.chatForground;
 	private Color disconnectColor = LoginFrame.exitColor;
@@ -63,6 +66,8 @@ public class ChatFrame extends JFrame {
 	private SimpleAttributeSet messageFont = new SimpleAttributeSet();
 	private SimpleAttributeSet dateFont = new SimpleAttributeSet();
 
+	private ArrayList<Message> messages;
+
 	/**
 	 * Create the frame.
 	 */
@@ -70,6 +75,7 @@ public class ChatFrame extends JFrame {
 	public ChatFrame(User user, ClientComunicator comunicator) {
 		this.connectedUser = user;
 		this.clientComunicator = comunicator;
+		this.messages = new ArrayList<Message>();
 
 		StyleConstants.setFontFamily(selfNameFont, "Lemon");
 		StyleConstants.setForeground(selfNameFont, selfNameColorFont);
@@ -147,11 +153,33 @@ public class ChatFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String content = newMessageArea.getText();
-				newMessageArea.setText("");
-				clientComunicator.sendMessage(connectedUser, content);
+				if (content.length() > 0) {
+					newMessageArea.setText("");
+					clientComunicator.sendMessage(connectedUser, content);
+				}
 			}
 		});
 		panel.add(sendButton);
+
+		JButton previousMessagesButton = new JButton("Load previous messages");
+		previousMessagesButton.setBackground(buttonsBackground);
+		previousMessagesButton.setForeground(fieldBackground);
+		previousMessagesButton.setBorder(null);
+		previousMessagesButton.setBounds(375, 11, 150, 32);
+		previousMessagesButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (messages.size() == 0) {
+					Message m = new Message();
+					m.setId(RequestType.NONE);
+					clientComunicator.getPreviouseMessage(m);
+				} else {
+					clientComunicator.getPreviouseMessage(messages.get(0));
+				}
+			}
+		});
+		panel.add(previousMessagesButton);
 
 		JButton disconnectButton = new JButton("Disconnect");
 		disconnectButton.setBackground(disconnectColor);
@@ -167,9 +195,9 @@ public class ChatFrame extends JFrame {
 			}
 		});
 		panel.add(disconnectButton);
-		
+
 		this.addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				// TODO Auto-generated method stub
@@ -179,76 +207,116 @@ public class ChatFrame extends JFrame {
 			@Override
 			public void windowActivated(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void windowOpened(WindowEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
 	}
 
-	public void writeSelfMessegeToDialog(Message message) {
-		// String senderName = connectedUser.getFirstName() + ": ";
+	public void writeSelfToEnd(Message message) {
+		messages.add(messages.size(), message);
 		String senderName = "You: ";
 		message.setMessage(message.getMessage() + "\n");
-		// Add some text
 		try {
 			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
 					selfNameFont);
-			
+
 			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
 					message.getMessage(), messageFont);
-			
+
 			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
 					message.getDate().toString() + "\n\n", dateFont);
-			
+
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void writeOtherMessegeToDialog(User otherUser, Message message) {
+	public void writeOtherToEnd(User otherUser, Message message) {
+		messages.add(messages.size(), message);
+		String senderName = otherUser.getFirstName() + ": ";
+		message.setMessage(message.getMessage() + "\n");
+		try {
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
+					otherNameFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getMessage(), messageFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+					message.getDate().toString() + "\n\n", dateFont);
+
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void writeSelfToTop(Message message) {
+		messages.add(0, message);
+		String senderName = "You: ";
+		message.setMessage(message.getMessage() + "\n");
+		try {
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(),
+					message.getDate().toString() + "\n\n", dateFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(),
+					message.getMessage(), messageFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(), senderName,
+					selfNameFont);
+
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void writeOtherToTop(User otherUser, Message message) {
+		messages.add(0, message);
 		String senderName = otherUser.getFirstName() + ": ";
 		message.setMessage(message.getMessage() + "\n");
 		// Add some text
 		try {
-			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(), senderName,
-					otherNameFont);
-			
-			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
-					message.getMessage(), messageFont);
-			
-			dialogArea.getDocument().insertString(dialogArea.getDocument().getEndPosition().getOffset(),
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(),
 					message.getDate().toString() + "\n\n", dateFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(),
+					message.getMessage(), messageFont);
+
+			dialogArea.getDocument().insertString(dialogArea.getDocument().getStartPosition().getOffset(), senderName,
+					otherNameFont);
 
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block

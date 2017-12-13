@@ -19,6 +19,10 @@ public interface ServerComunicator {
 
 	public boolean Register(User newUser);
 
+	public Message getPreviouseMessage(Message lastMessage);
+	
+	public User getUser(int id);
+
 	public void disconnect(int indexInHash);
 
 }

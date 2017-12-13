@@ -125,13 +125,10 @@ public class Server implements ServerComunicator, Runnable {
 		return message;
 	}
 
-	public static void main(String[] args) {
-		Server server = new Server();
-	}
-
 	@Override
 	public void disconnect(int indexInHash) {
-//		connectedUsers.get(indexInHash).write(RequestType.DISCONNECT + "|" + "1");
+		// connectedUsers.get(indexInHash).write(RequestType.DISCONNECT + "|" +
+		// "1");
 		try {
 			System.out.println("user disconnected - " + indexInHash);
 			connectedUsers.get(indexInHash).disconnect();
@@ -140,6 +137,23 @@ public class Server implements ServerComunicator, Runnable {
 			e.printStackTrace();
 		}
 		connectedUsers.remove(indexInHash);
+	}
+
+	@Override
+	public Message getPreviouseMessage(Message lastMessage) {
+		MessageDao mdao = new MessageDao();
+		Message result = mdao.getPreviouseMessege(lastMessage.getId());
+		return result;
+	}
+
+	public static void main(String[] args) {
+		Server server = new Server();
+	}
+
+	@Override
+	public User getUser(int id) {
+		UserDao dao = new UserDao();
+		return dao.getUserById(id);
 	}
 
 }

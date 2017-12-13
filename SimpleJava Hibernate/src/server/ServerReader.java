@@ -109,6 +109,26 @@ public class ServerReader extends Thread {
 				serverWorkingThred.write(RequestType.MESSEGE_SEND + "|" + RequestType.FAILURE);
 			}
 			break;
+		case RequestType.MESSEGE_GET:
+			String messageJson = arr[1];
+			Message lastMessage = gson.fromJson(messageJson, Message.class);
+			Message previous = serverComunicator.getPreviouseMessage(lastMessage);
+			if (previous == null) {
+				String data = RequestType.MESSEGE_GET + "|" + RequestType.NONE;
+				serverWorkingThred.write(data);
+			} else {
+				User senderUser = serverComunicator.getUser(previous.getSenderId());
+				messageJson = gson.toJson(previous);
+				String userJson = gson.toJson(senderUser);
+				String data = RequestType.MESSEGE_GET + "|" + RequestType.SUCCESS + "|" + messageJson + "|" + userJson;
+				serverWorkingThred.write(data);
+			}
+			break;
+		case RequestType.GET_USER:
+			int id = Integer.parseInt(arr[1]);
+			User user = serverComunicator.getUser(id);
+			String data = RequestType.GET_USER + "|" + gson.toJson(user);
+			serverWorkingThred.write(data);
 		case RequestType.DISCONNECT:
 
 			try {
@@ -123,9 +143,11 @@ public class ServerReader extends Thread {
 		}
 
 	}
-	public void setStop(boolean state){
+
+	public void setStop(boolean state) {
 		this.stop = true;
 	}
+
 	public void disconnect() throws IOException {
 		myInputStream.close();
 		myOutPutStream.close();

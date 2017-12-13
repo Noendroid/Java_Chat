@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import com.google.gson.Gson;
 
+import tre.Message;
 import tre.RequestType;
 import tre.User;
 
@@ -18,15 +19,15 @@ public class Client implements ClientComunicator {
 	public Client(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
-		//connect();
+		// connect();
 
 	}
 
 	public void connect() {
 		try {
-			if(connection == null || connection.isClosed()){
+			if (connection == null || connection.isClosed()) {
 				connection = new Socket(ip, port);
-				work = new ClientWorkingThread(connection, this);				
+				work = new ClientWorkingThread(connection, this);
 			}
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -74,10 +75,23 @@ public class Client implements ClientComunicator {
 	}
 
 	@Override
+	public void getPreviouseMessage(Message lastMessage) {
+		Gson gson = new Gson();
+		String messageInJson = gson.toJson(lastMessage);
+		String dataToTransfer = RequestType.MESSEGE_GET + "|" + messageInJson;
+		write(dataToTransfer);
+	}
+
+	@Override
 	public void disconnect() {
 		System.out.println("disconnecting");
 		write(RequestType.DISCONNECT + "|" + "1");
 		work.disconnect();
+	}
+
+	@Override
+	public void requestUserById(int id) {
+		write(RequestType.GET_USER + "|" + id);
 	}
 
 }
