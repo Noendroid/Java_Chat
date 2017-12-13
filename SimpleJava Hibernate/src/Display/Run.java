@@ -16,7 +16,6 @@ public class Run {
 		// TODO Auto-generated method stub
 		client = new Client("192.168.91.1", 81);
 		login = new LoginFrame(client);
-		login.setVisible(true);
 	}
 
 	public static void openLogin() {
