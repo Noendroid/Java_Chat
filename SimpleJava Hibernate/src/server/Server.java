@@ -36,7 +36,7 @@ public class Server implements ServerComunicator, Runnable {
 		try {
 			connectedUsers = new HashMap<Integer, ServerWorkingThread>();
 			server = new ServerSocket(port);
-			System.out.println("server-ip4:\t" + Inet4Address.getLocalHost());
+			System.out.println("server-ip:\t" + Inet4Address.getLocalHost());
 			Thread a = new Thread(this);
 			a.start();
 

@@ -14,7 +14,9 @@ public class Run {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		client = new Client("192.168.91.1", 81);
+		System.out.println("starting new RUN");
+		client = new Client("fe80::e4a8:edce:66f5:43f8", 81);
+//		client = new Client("192.168.91.1", 81);
 		login = new LoginFrame(client);
 	}
 

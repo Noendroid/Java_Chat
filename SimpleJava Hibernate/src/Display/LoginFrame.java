@@ -103,6 +103,7 @@ public class LoginFrame extends JFrame {
 		};
 		this.addMouseListener(mouseWindowPressed);
 		this.addMouseMotionListener(mouseWindowDragged);
+		this.setVisible(true);
 	}
 
 	public void openChat(User user, int port) {
